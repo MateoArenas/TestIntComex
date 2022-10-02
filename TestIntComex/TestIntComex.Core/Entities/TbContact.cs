@@ -6,6 +6,7 @@ namespace TestIntComex.Core.Entities
     public class TbContact
     {
         [Key]
+        public int Id { get; set; }
         public string strClientCode { get; set; }
         public string strUserName { get; set; }
         public string strName { get; set; }

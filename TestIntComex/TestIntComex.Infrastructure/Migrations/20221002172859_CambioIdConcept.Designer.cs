@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestIntComex.Infrastructure.Data;
 
@@ -10,9 +11,10 @@ using TestIntComex.Infrastructure.Data;
 namespace TestIntComex.Infrastructure.Migrations
 {
     [DbContext(typeof(IntComexContext))]
-    partial class IntComexContextModelSnapshot : ModelSnapshot
+    [Migration("20221002172859_CambioIdConcept")]
+    partial class CambioIdConcept
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

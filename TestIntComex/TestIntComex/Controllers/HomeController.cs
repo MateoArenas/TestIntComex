@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using TestIntComex.Core.DTOs;
+using TestIntComex.Core.Entities;
 using TestIntComex.Core.Interfaces;
 using TestIntComex.Models;
 
@@ -16,21 +18,27 @@ namespace TestIntComex.Controllers
             _informationContact = informationContact;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            if (await _informationContact.IsFullContactType())
-                await _informationContact.FillContactType();
-
+            if (!await _informationContact.IsFullContactType()) 
+            { 
+                ResultsDto fillCT = await _informationContact.FillContactType();
+                if (!fillCT.IsSuccess)
+                    return View("Error");
+            }
+                
             ViewBag.ContactsType = await _informationContact.ListContactsType();
 
             return View();
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public async Task<IActionResult> SaveContact(TbContact tbContact) 
         {
-            return View();
-        }
 
+            return View("Index");
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
