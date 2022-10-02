@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using TestIntComex.Core.Interfaces;
 using TestIntComex.Models;
 
 namespace TestIntComex.Controllers
@@ -7,14 +8,21 @@ namespace TestIntComex.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IInformationContactRepository _informationContact;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IInformationContactRepository informationContact)
         {
             _logger = logger;
+            _informationContact = informationContact;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            if (await _informationContact.IsFullContactType())
+                await _informationContact.FillContactType();
+
+            ViewBag.ContactsType = await _informationContact.ListContactsType();
+
             return View();
         }
 
