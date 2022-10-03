@@ -13,7 +13,11 @@ de la aplicacion en el valor "DefaultConnection" en la pripiedad server.<br>
 
 3. En esta aplicación se uso EF Code First, y tiene las migraciones activas, pero no automaticas, para generar la base de datos debe usar el comando "Update-database" en
 el tablero de comandos de Visual Studio.<br>
-Nota: En caso de que no funcione el comando dicho, primero ejecute "Add-Migrations" y luego  "Update-database".
+Nota: En caso de que no funcione el comando dicho, primero ejecute "Add-Migrations" y luego  "Update-database".<br>
+
+4. Una vez tenga la base de datos, tenga en cuenta que los tipos de contacto se cargaran soslo al sistema la primera vez que inicie la aplicación. <br>
+
+5. En la parte del JavaScript, se uso tanto el JavaScript puro como JQuery, esto para mostrar el conocimiento tanto en el lenguaje como en el pluggin.<br> 
 
 
 
