@@ -70,7 +70,7 @@ namespace TestIntComex.Infrastructure.Repositories
 
                     return resultsDto;
                 }
-
+                contact.strPhone = $"+57{contact.strPhone}";
                 contact.strPassword = resultsDto.Description;
 
                 await _context.TbContact.AddAsync(contact);

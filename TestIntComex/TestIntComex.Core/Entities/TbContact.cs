@@ -8,13 +8,30 @@ namespace TestIntComex.Core.Entities
         [Key]
         public int Id { get; set; }
         public string strClientCode { get; set; }
-        public string strUserName { get; set; }
-        public string strName { get; set; }
-        public string strPosition { get; set; }
-        public string strPhone { get; set; }
-        public string strEmail { get; set; }
-        public string strCellphone { get; set; }
 
+        [Required]
+        [MaxLength(6)]
+        public string strUserName { get; set; }
+
+        [Required]
+        [MinLength(5)]
+        [MaxLength(15)]
+        public string strName { get; set; }
+
+        [Required]
+        [MinLength(5)]
+        [MaxLength(10)]
+        public string strPosition { get; set; }
+
+        [Required]
+        [MaxLength(10)]
+        public string strPhone { get; set; }
+
+        [Required]
+        public string strEmail { get; set; }
+        public string? strCellphone { get; set; }
+
+        [Required]
         [ForeignKey("TbContactType")]
         public int IdContactType { get; set; }
         public TbContactType TbContactType { get; set; }
@@ -23,6 +40,7 @@ namespace TestIntComex.Core.Entities
         public bool boolAutorizeOrders { get; set; }
         public bool boolSendInformation { get; set; }
 
+        [Required]
         public string strPassword { get; set; }
     }
 }

@@ -4,14 +4,14 @@
 
 <div class="text-center">
     <h1 class="display-4">Bienvenido a esta prueba tecnica</h1>
-    <p>A continuación tendra dos opciones a escoger crear y listar, sientase libre de probarlas como mas guste.</p>
+    <p>A continuación tendra dos opciones a escoger guardar y listar, sientase libre de probarlas como más guste.</p>
 </div>
 <br />
 <div class="col-sm-12 justify-content-center row">
     <div class="card col-sm-4">
         <div class="card-body">
             <h5 class="card-title">Listar contactos</h5>
-            <p class="card-text">Aqui podras visulizar las solicitd de contactos guardadas hasta el momento.</p>
+            <p class="card-text">Aqui podras visualizar las solicitudes de contactos guardadas hasta el momento.</p>
             <a class="btn btn-outline-primary" id="btnConsult">Consultar</a>
         </div>
     </div>
@@ -20,12 +20,30 @@
         <div class="card-body">
             <h5 class="card-title">Guardar contacto</h5>
             <p class="card-text">Aqui podras guardar nuevos contactos ingresando todos los campos necesarios.</p>
-            <button class="btn btn-outline-primary" data-toggle="modal" data-target="#ModalSave" onclick="ChargeCodeFuntion()">Registrar</button>
+            <button class="btn btn-outline-primary" data-toggle="modal" data-target="#ModalSave" onclick="ChargeCodeFunction()">Registrar</button>
         </div>
     </div>
 </div>
+<br />
+<div class="col-sm-12" style="display:none" id="Divtable">
+    <table class="table table-bordered table-striped" id="TableContac" style="width:100%">
+        <thead>
+            <tr>
+                <th>Codigo cliente</th>
+                <th>Nombre usuario</th>
+                <th>Nombre</th>
+                <th>Cargo</th>
+                <th>Teléfono</th>
+                <th>Correo Electronico</th>
+                <th>Celular</th>
+                <th>Contraseña</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
-<div class="modal fade bd-example-modal-lg" id="ModalSave" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalSave" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -35,7 +53,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                @using (Html.BeginForm("SaveContact", "Home", FormMethod.Post))
+                @using (Html.BeginForm("SaveContact", "Home", FormMethod.Post, new { @id="SaveContact"}))
                 {
                     <div class="form-group row">
                         <label for="strClientCode" class="col-sm-4 col-form-label">Codigo del cliente:</label>
@@ -68,7 +86,7 @@
                     <div class="form-group row">
                         <label for="strPhone" class="col-sm-4 col-form-label">Teléfono:*</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="strPhone" name="strPhone" placeholder="Teléfono:*">
+                            <input type="number" class="form-control" id="strPhone" name="strPhone" placeholder="+57">
                         </div>
                     </div>
                     <br />
@@ -82,7 +100,7 @@
                     <div class="form-group row">
                         <label for="strCellphone" class="col-sm-4 col-form-label">Número celular:*</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="strCellphone" name="strCellphone" placeholder="Número celular:*">
+                            <input type="number" class="form-control" id="strCellphone" name="strCellphone" placeholder="Número celular:*">
                         </div>
                     </div>
                     <br />
@@ -126,9 +144,10 @@
 @section Scripts
     {
     <script type="text/javascript">
+        var table;
         $(document).ready(function(){
             $("#strClientCode").val("xmxwebdemo2");
-
+            table = $("#TableContac").DataTable();
             Swal.fire({
                 title: '',
                 html: 'Cargando datos iniciales...',
@@ -140,15 +159,139 @@
             });
         });
 
-        function ChargeCodeFuntion() {
+        function ChargeCodeFunction() {
             $("#ModalSave").modal("show");
-        }
-        function CloseModal() {
-            $("#ModalSave").modal("hide");
         }
 
         function CloseModal() {
             $("#ModalSave").modal("hide");
         }
+
+        function ValidateAndSave() {
+            let validationValue = document.getElementById('strUserName').value;
+            console.log(document.getElementById('IdContactType').value); IdContactType
+            if (validationValue == "") {
+                ValidationMesagge("Debe ingresar un usuario con las siguientes especificaciones: debe comenzar con MXM y debe tener 6 caracteres.");
+
+                return;
+            }
+            if (validationValue.length != 6) {
+                ValidationMesagge("El usuario debe tener 6 caracteres.");
+
+                return;
+            }
+            let separateWord = validationValue.split("");
+            if (separateWord[0] !== "M" || separateWord[1] !== "X" || separateWord[2] !== "M") {
+                ValidationMesagge("Las primeras letras del usuario deben ser MXM.");
+
+                return;
+            }
+            validationValue = document.getElementById('strName').value;
+            if (validationValue == "") {
+                ValidationMesagge("Debe ingresar un nombre con las siguientes especificaciones: debe tener entre 5 y 15 caracteres.");
+
+                return;
+            }
+            if (validationValue.length < 5 || validationValue.length > 15) {
+                ValidationMesagge("El usuario debe tener entre 5 y 15 caracteres.");
+
+                return;
+            }
+            validationValue = document.getElementById('strPosition').value;
+            if (validationValue == "") {
+                ValidationMesagge("Debe ingresar un Cargo con las siguientes especificaciones: debe tener 5 a 10 caracteres.");
+
+                return;
+            }
+            if (validationValue.length < 5 || validationValue.length > 10) {
+                ValidationMesagge("El cargo debe tener entre 5 y 10 caracteres.");
+
+                return;
+            }
+            validationValue = document.getElementById('strPhone').value;
+            if (validationValue == "") {
+                ValidationMesagge("Debe ingresar un número telefonico con las siguientes especificaciones: debe tener 7 números.");
+
+                return;
+            }
+            if (validationValue.length != 7) {
+                ValidationMesagge("El numero telefonico debe tener 7 números.");
+
+                return;
+            }
+            validationValue = document.getElementById('strEmail').value;
+            if (validationValue == "") {
+                ValidationMesagge("Debe ingresar un email con las siguientes especificaciones: debe tener formato de correo electronico.");
+
+                return;
+            }
+            let re = /^\w+@@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
+            if (!re.test(validationValue)){
+                ValidationMesagge("El dato ingresado no tiene formato de correo.");
+
+                return;
+            }
+
+            validationValue = document.getElementById('IdContactType').value;
+            if (validationValue == "") {
+                ValidationMesagge("Debe seleccionar algun tipo de contacto.");
+
+                return;
+            }
+
+            $("#SaveContact").submit();
+        }
+
+        function ValidationMesagge(strMessage)
+        {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No es posible guardar el contacto',
+                text: strMessage + " Revise la información e intentelo de nuevo.",
+            })
+        }
+
+        $(document).on("click", "#btnConsult", function () {
+            Swal.fire({
+                title: '',
+                html: 'Cargando contactos ingresados...',
+                timerProgressBar: true,
+                didOpen: () => {
+
+                    Swal.showLoading();
+                    $.ajax({
+                        url: "@Url.Action("GetDataContact","Home")",
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (json) {
+                            table.destroy();
+                            table = table = $("#TableContac").DataTable({
+                                data: json,
+                                columns: [
+                                    { data: 'strClientCode' },
+                                    { data: 'strUserName' },
+                                    { data: 'strName' },
+                                    { data: 'strPosition' },
+                                    { data: 'strPhone' },
+                                    { data: 'strEmail' },
+                                    { data: 'strCellphone' },
+                                    { data: 'strPassword' },
+                                ]
+                            });
+
+                            $("#Divtable").css("display", "");
+                            Swal.close();
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'No es posible trear los datos',
+                                text: "Error al traer los datos de los contactos.",
+                            })
+                        },
+                    });
+                }
+            });
+        });
     </script>
 }

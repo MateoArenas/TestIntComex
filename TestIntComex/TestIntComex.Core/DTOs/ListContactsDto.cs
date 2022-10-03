@@ -8,7 +8,7 @@
         public string strPosition { get; set; }
         public string strPhone { get; set; }
         public string strEmail { get; set; }
-        public string strCellphone { get; set; }
+        public string? strCellphone { get; set; }
         public string ContactTypeName { get; set; }
         public bool boolAutorizeWebStore { get; set; }
         public bool boolAutorizeOrders { get; set; }

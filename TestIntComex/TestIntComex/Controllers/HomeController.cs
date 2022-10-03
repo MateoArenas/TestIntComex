@@ -34,11 +34,22 @@ namespace TestIntComex.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveContact(TbContact tbContact) 
+        public async Task<IActionResult> SaveContact(TbContact tbContact)
         {
+            ResultsDto result = await _informationContact.SaveInformation(tbContact);
+            if (!result.IsSuccess)
+                return View("Error");
 
+            ViewBag.ContactsType = await _informationContact.ListContactsType();
             return View("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetDataContact()
+        {
+            return Json(await _informationContact.ListContacts());
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
